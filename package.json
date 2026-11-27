@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "pnpm --filter @saurlax/saui build && pnpm --filter @saurlax/saui-preview dev",
+    "dev": "pnpm dev:preview",
+    "dev:preview": "pnpm --filter @saurlax/saui build && pnpm --filter @saurlax/saui-preview dev",
+    "storybook": "pnpm --filter @saurlax/saui-preview storybook",
+    "build-storybook": "pnpm --filter @saurlax/saui-preview build-storybook",
     "lint": "turbo lint",
     "format": "turbo format",
     "typecheck": "turbo typecheck",

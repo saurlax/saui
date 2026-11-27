@@ -2,6 +2,13 @@ import { resolve } from "node:path"
 import tailwindcss from "@tailwindcss/vite"
 import { defineConfig } from "vite"
 
+import pkg from "./package.json" with { type: "json" }
+
+const externalPackages = [
+  ...Object.keys(pkg.dependencies),
+  ...Object.keys(pkg.peerDependencies),
+]
+
 export default defineConfig({
   plugins: [tailwindcss()],
   resolve: {
@@ -17,7 +24,12 @@ export default defineConfig({
       cssFileName: "styles",
     },
     rolldownOptions: {
-      external: /^(react|react-dom|@base-ui\/react|class-variance-authority|cn|lucide-react)(\/|$)/,
+      external: (id) =>
+        externalPackages.some(
+          (name) => id === name || id.startsWith(`${name}/`)
+        ),
+      // The single ESM bundle gets the client directive from the output banner.
+      checks: { moduleLevelDirective: false },
       output: { banner: '"use client";' },
     },
   },

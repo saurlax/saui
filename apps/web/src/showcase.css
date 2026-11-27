@@ -1,0 +1,251 @@
+.showcase-shell {
+  width: min(100% - 3rem, 70rem);
+  margin-inline: auto;
+}
+
+.showcase-header {
+  border-bottom: 1px solid var(--border);
+}
+
+.showcase-header-inner {
+  min-height: 4.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.showcase-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1.1rem;
+  font-weight: 680;
+  letter-spacing: -0.025em;
+}
+
+.showcase-mark {
+  width: 2rem;
+  height: 2rem;
+}
+
+.dark .showcase-mark {
+  filter: invert(1);
+}
+
+.showcase-nav {
+  display: flex;
+  gap: clamp(0.8rem, 3vw, 2rem);
+  margin-left: auto;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.showcase-nav a:hover {
+  color: var(--foreground);
+}
+
+.showcase-intro {
+  padding-block: clamp(2.8rem, 7vw, 5.6rem) clamp(2.4rem, 6vw, 4.5rem);
+}
+
+.showcase-intro h1 {
+  font-size: clamp(2.5rem, 7.2vw, 5.2rem);
+  font-weight: 650;
+  letter-spacing: -0.072em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.showcase-intro p {
+  max-width: 38rem;
+  margin-top: 1rem;
+  color: var(--muted-foreground);
+  font-size: clamp(0.98rem, 1.6vw, 1.15rem);
+  text-wrap: pretty;
+}
+
+.showcase-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.6rem;
+}
+
+.showcase-controls h2,
+.showcase-index h2 {
+  font-size: 1.35rem;
+  font-weight: 630;
+  letter-spacing: -0.035em;
+}
+
+.showcase-search {
+  position: relative;
+  width: min(100%, 16rem);
+  color: var(--muted-foreground);
+}
+
+.showcase-search svg {
+  position: absolute;
+  top: 50%;
+  left: 0.65rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.showcase-search input {
+  padding-left: 2rem;
+  color: var(--foreground);
+}
+
+.showcase-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin-block: 1rem 1.35rem;
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.showcase-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--card);
+}
+
+.showcase-card h3 {
+  padding: 0.35rem 0.35rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 630;
+}
+
+.showcase-demo {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  min-height: 9rem;
+  min-width: 0;
+  padding: clamp(0.65rem, 2vw, 1.2rem);
+  background: color-mix(in oklch, var(--muted) 54%, var(--background));
+  border-radius: 0.6rem;
+}
+
+.showcase-demo > * {
+  max-width: 100%;
+}
+
+.sample-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.sample-stack {
+  display: grid;
+  width: min(100%, 15rem);
+  gap: 0.55rem;
+}
+
+.sample-stack--spaced {
+  gap: 0.9rem;
+}
+
+.sample-pair {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.showcase-empty {
+  display: grid;
+  place-items: center;
+  min-height: 8rem;
+  border: 1px dashed var(--border);
+  border-radius: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.showcase-empty a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.showcase-empty svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.showcase-index {
+  padding-block: 1.6rem 4rem;
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.showcase-index h2 span {
+  margin-left: 0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+  font-weight: 450;
+  letter-spacing: 0;
+}
+
+.showcase-index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.showcase-index-grid h3 {
+  margin-bottom: 0.45rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.showcase-index-grid li {
+  color: var(--muted-foreground);
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+@media (width <= 60rem) {
+  .showcase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 34rem) {
+  .showcase-shell {
+    width: calc(100% - 2rem);
+  }
+
+  .showcase-header-inner {
+    min-height: 3.6rem;
+    gap: 0.8rem;
+  }
+
+  .showcase-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
