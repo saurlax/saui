@@ -1,0 +1,80 @@
+name: Publish npm
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+
+concurrency:
+  group: npm-publish
+  queue: max
+
+jobs:
+  publish:
+    if: github.repository == 'saurlax/saui' && (github.event_name == 'push' || !github.event.release.prerelease)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - uses: pnpm/action-setup@f53f5227a9e83886ab598c617f3c170fab62f0d3 # v6
+      - name: Publish package
+        shell: bash
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          package=@saurlax/saui
+
+          publish() (
+            git checkout --force --detach "$1"
+            cd packages/ui
+            version=$(node -p 'require("./package.json").version')
+            tag=$2
+            if [[ "$tag" == latest ]]; then
+              [[ "$version" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ && "$GITHUB_REF_NAME" == "v$version" ]] || {
+                echo "Release tag must match the stable version in packages/ui/package.json"; exit 1;
+              }
+              latest=$(npm view "$package@latest" version --prefer-online)
+              if [[ "$(printf '%s\n' "$latest" "$version" | sort -V | tail -1)" != "$version" ]]; then
+                echo "Release $version precedes latest ($latest)"; exit 1
+              fi
+            else
+              version="$version-dev.g$1"
+              npm pkg set "version=$version"
+            fi
+
+            if npm view "$package@$version" version --prefer-online >/dev/null 2>&1; then
+              echo "$package@$version is already published"
+              exit 0
+            fi
+            pnpm install --frozen-lockfile
+            pnpm build
+            # The GitHub provenance attestation identifies the event SHA.
+            if [[ "$1" != "$GITHUB_SHA" ]]; then export NPM_CONFIG_PROVENANCE=false; fi
+            npm publish --access public --tag "$tag" --ignore-scripts
+          )
+
+          if [[ "$GITHUB_EVENT_NAME" == release ]]; then
+            publish "$GITHUB_SHA" latest
+          else
+            commits=$GITHUB_SHA
+            if [[ ! "$BEFORE_SHA" =~ ^0+$ ]]; then
+              commits=$(git rev-list --reverse --topo-order "$BEFORE_SHA..$GITHUB_SHA")
+            fi
+            head=$(git ls-remote origin refs/heads/main | cut -f1)
+            for commit in $commits; do
+              tag=dev-history
+              if [[ "$commit" == "$head" ]]; then tag=dev; fi
+              publish "$commit" "$tag"
+            done
+          fi
