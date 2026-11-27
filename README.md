@@ -1,21 +1,31 @@
-# shadcn/ui monorepo template
+# saui
 
-This is a Vite monorepo template with shadcn/ui.
+A shared React component library for web and desktop WebView apps. It uses shadcn/ui’s Nova preset with Base UI.
 
-## Adding components
+- `packages/ui` contains the component source, theme variables, and library build.
+- `apps/web` is a Vite preview that imports the built UI package.
 
-To add components to your app, run the following command at the root of your `web` app:
+## Development
 
-```bash
-pnpm dlx shadcn@latest add button -c apps/web
+Use Node.js 22.13 or later and pnpm 11.25.0.
+
+```sh
+pnpm install
+pnpm dev
+pnpm build
+pnpm lint
+pnpm typecheck
 ```
 
-This will place the ui components in the `packages/ui/src/components` directory.
+Run `pnpm ui:add <component>` to add shadcn components. Export components from `packages/ui/src/index.ts` when they are part of the public API.
 
-## Using components
+## Use in an app
 
-To use the components in your app, import them from the `ui` package.
+Install the package from a workspace or a package archive, then import its CSS once at the app entry point.
 
 ```tsx
-import { Button } from "@workspace/ui/components/button";
+import { Button, Input } from "@saurlax/saui"
+import "@saurlax/saui/styles.css"
 ```
+
+Run `pnpm --filter @saurlax/saui pack` to build an archive for use in another repository.

@@ -1,19 +1,46 @@
-import { Button } from "@workspace/ui/components/button"
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@saurlax/saui"
 
 export function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="text-muted-foreground font-mono text-xs">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <main style={{ maxWidth: "28rem", margin: "4rem auto", padding: "0 1rem" }}>
+      <h1 style={{ fontSize: "2rem", fontWeight: 600, marginBottom: "1.5rem" }}>
+        saui
+      </h1>
+      <div style={{ display: "grid", gap: "1rem", justifyItems: "start" }}>
+        <Input aria-label="Project name" placeholder="Project name" />
+        <Select defaultValue="web">
+          <SelectTrigger aria-label="Platform">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="web">Web</SelectItem>
+            <SelectItem value="desktop">Desktop</SelectItem>
+          </SelectContent>
+        </Select>
+        <Dialog>
+          <DialogTrigger render={<Button />}>Open dialog</DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Project settings</DialogTitle>
+              <DialogDescription>Manage your project preferences.</DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
-    </div>
+    </main>
   )
 }
